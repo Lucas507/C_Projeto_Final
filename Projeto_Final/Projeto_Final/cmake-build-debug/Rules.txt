@@ -1,0 +1,17 @@
+Bem vindo ao jogo da limonada. O Jogo da Limonada é um simulador de gestão onde assumes o papel de um empreendedor com um orçamento inicial de 20€, tentando criar um negócio de sucesso vendendo limonadas. O objetivo é tomar decisões estratégicas para maximizar os lucros ao longo de vários dias.
+
+No jogo, poderás:
+
+    Decidir quantas limonadas produzir, equilibrando os custos dos ingredientes e o inventário.
+    Definir o preço de venda, adaptando-o às condições meteorológicas, que influenciam a procura (ex.: em dias quentes, a procura é maior).
+    Investir em publicidade para atrair mais clientes e aumentar as vendas.
+    Melhorar o teu negócio comprando upgrades, como máquinas mais eficientes ou stands mais atrativos.
+
+Além disso, o jogo apresenta eventos dinâmicos que afetam a jogabilidade, como:
+
+    Concertos ou eventos desportivos, que aumentam o fluxo de clientes na tua área.
+    Dias de feira ou festivais, que trazem desafios e oportunidades adicionais.
+
+O jogo termina se os teus ganhos forem inferiores ao orçamento gasto ou se o teu orçamento não for suficiente para produzir limonadas.
+
+Cabe-te decidir como investir o teu dinheiro, adaptar-te aos imprevistos e expandir o teu negócio para alcançar o maior lucro possível!
