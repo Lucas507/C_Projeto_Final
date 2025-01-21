@@ -131,6 +131,11 @@ int vitoria(char *jogador, int dia, float lucro_total) {
 
     FILE *fptw = fopen("Scoreboard.txt", "a+");
 
+    if (!fptw) {
+        printf("Erro ao abrir o arquivo Scoreboard.txt\n");
+        return 1;
+    }
+
     system("cls");
 
     fprintf(fptw, "\n\nJogador: %s", jogador);
@@ -167,6 +172,11 @@ int game_over(char *jogador, int dia, float lucro_total) {
     getchar();
 
     FILE *fptw = fopen("Scoreboard.txt", "a+");
+
+    if (!fptw) {
+        printf("Erro ao abrir o arquivo Scoreboard.txt\n");
+        return 1;
+    }
 
     system("cls");
 
