@@ -27,3 +27,18 @@ Lucro Total: 0.70
 Jogador: a
 Último dia: 7
 Melhor Lucro: -0.55
+
+Jogador: A
+
+Último dia: 3
+Lucro Total: 0.70
+
+Jogador: A
+
+Último dia: 3
+Lucro Total: 0.70
+
+Jogador: A
+
+Último dia: 7
+Melhor Lucro: 1.15
