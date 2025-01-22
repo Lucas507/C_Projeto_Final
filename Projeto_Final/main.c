@@ -278,7 +278,7 @@ int main(void) {
         //Verifica se é o 1º dia, se for é retirado o evento de obras na rua para não causar game over
         if (i <= 1) {
             switch (evento) {
-                case 1: printf("Concerto de música (+50%% de chance de vendas)\n"); chance2 = 0.35; break;
+                case 1: printf("Concerto de música (+35%% de chance de vendas)\n"); chance2 = 0.35; break;
                 case 2: printf("Evento de jogos e animes (+50%% de chance de vendas)\n"); chance2 = 0.5; break;
                 case 3: printf("Jogo de futebol (+25%% de chance de vendas)\n"); chance2 = 0.15; break;
                 default: break;
