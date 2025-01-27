@@ -4,6 +4,13 @@
 #include <string.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <time.h>
+
+// Função para limpar o buffer de entrada
+void limpar_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 // Função para mostrar o ecra inicial e centrar o texto
 int ecra_inicial(void) {
@@ -28,8 +35,6 @@ int ecra_inicial(void) {
         printf(" ");
     }
     printf("%s", texto);
-
-    fflush(stdout); // Garante que a saída foi enviada antes do getchar
     getchar(); // Espera o ENTER
     return 0;
 }
@@ -45,42 +50,6 @@ void tabela_precos(char *nome_limoes, float preco_limoes, char *nome_acucar, flo
     printf("Preço do %s: %.2f€\n", nome_acucar, preco_acucar);
     printf("Preço da %s: %.2f€\n", nome_agua, preco_agua);
 }
-
-// Upgrades
-/* char* loja(int dia, bool panfleto, bool redes, bool morango, bool laranja) {
-   char upgrade[19];
-
-    printf("Upgrades:");
-    printf("\nPanfleto: Aumenta a procura em 15%% - 4€");
-    printf("\nRedes Sociais: Aumenta a procura em 50%% permanentemente - 35€");
-    if (dia > 3)
-        printf("\nLimonada de Morango: Nova Receita - 25€");
-    if (dia > 4)
-        printf("\nLimonada de Laranja: Nova Receita - 30€");
-    printf("Se não quiseres comprar nada escreve exit");
-
-    if (strcmp("exit", upgrade) == 0)
-        return 0;
-
-    do {
-        printf("\n\nQual o upgrade que queres fazer (Escreve o nome do upgrade. Ex: Redes Sociais. Só consegues comprar 1 por dia):");
-        scanf("%s", upgrade);
-
-        if ((strcmp("Limonada de Morango", upgrade) == 0 || strcmp("Limonada de Laranja", upgrade) == 0) && dia < 3) {
-            printf("Comando não reconhecido");
-        }
-        else if (strcmp("Panfleto", upgrade) != 0 || strcmp("Redes Sociais", upgrade) != 0 || strcmp("Limonada de Mornago", upgrade) != 0 || strcmp("Limonada de Laranja", upgrade) != 0) {
-            printf("Comando não reconhecido");
-            continue;
-        }
-
-        break;
-    }
-    while (1);
-
-    return upgrade;
-}
-*/
 
 // Função para mostrar o stock
 void stock(int limoes, int acucar, int agua) {
@@ -104,8 +73,8 @@ int venda_limonadas(int limonadas, float chance1, float chance2, float preco) {
         printf("Ninguém comprou nenhuma limonada. Os clientes reclamaram que o preço é demasiado caro");
         fflush(stdout); // Garante que o texto é mostrado imediatamente
         printf("\n\nPressione ENTER para continuar...");
+        limpar_buffer();
         getchar(); // Aguarda o ENTER
-        getchar(); // Caso exista um ENTER residual no buffer
         system("cls"); // Limpa a tela após o ENTER
         return venda_sucedida;//retorna o valor das vendas sucedidas
     }
@@ -126,7 +95,6 @@ int vitoria(char *jogador, int dia, float lucro_total) {
 
     printf("Ganhaste\n");
     printf("\nPressione ENTER para continuar...");
-    fflush(stdout); // Garante que a saída foi enviada antes do getchar
     getchar();
 
     FILE *fptw = fopen("Scoreboard.txt", "a+");
@@ -140,7 +108,7 @@ int vitoria(char *jogador, int dia, float lucro_total) {
 
     fprintf(fptw, "\n\nJogador: %s", jogador);
     fprintf(fptw, "\nÚltimo dia: %d", dia);
-    fprintf(fptw, "\nMelhor Lucro: %.2f", lucro_total);
+    fprintf(fptw, "\nLucro Total: %.2f", lucro_total);
 
     // Move o ponteiro para o início do arquivo
     rewind(fptw);
@@ -204,28 +172,40 @@ int game_over(char *jogador, int dia, float lucro_total) {
     execl("Projeto_Final", "Projeto_Final", NULL); // Substitui o processo atual pelo novo
 }
 
-//Estrutura para criar os produtos necessarios para a limonada
+//Estrutura para criar os produtos necessarios para fazer uma bebida
 struct Produtos {
     char nome_produto[20];
     float preco;
     int quantidade;
 };
 
+void loja_extras() {
+    puts("----- Loja de Extras -----");
+    puts("Chegaste ao 2º dia com o teu negócio, é hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
+    printf("1. Sumo de Laranja (+10%% de lucro) - 25€\n");
+    printf("2. Sumo de Ananás e Coco (+30%% de lucro) - 35€\n");
+    printf("3. Começar a fazer marketing digital (+50%% de clientes) - 50€\n");
+    printf("4. Não comprar nada!\n");
+    printf("Por favor, escolhe uma opção acima (1-4): ");
+}
+
 int main(void) {
-    struct Produtos limoes, agua, acucar;
+    struct Produtos limoes, agua, acucar, coco, ananas, laranja;
     strcpy(limoes.nome_produto, "Limões");//Utilizamos o strcpy para passar o valor para limoes.nome_produto
     limoes.preco = 0.2;
     limoes.quantidade = 0;
-    strcpy(acucar.nome_produto, "Açúcar");//Utilizamos o strcpy para passar o valor para limoes.nome_produto
+    strcpy(acucar.nome_produto, "Açúcar");//Utilizamos o strcpy para passar o valor para acucar.nome_produto
     acucar.preco = 0.35;
     acucar.quantidade = 0;
-    strcpy(agua.nome_produto, "Água");//Utilizamos o strcpy para passar o valor para limoes.nome_produto
+    strcpy(agua.nome_produto, "Água");//Utilizamos o strcpy para passar o valor para agua.nome_produto
     agua.preco = 0.1;
     agua.quantidade = 0;
     char jogador[20];
     int limonadas, limoes_comprados = 0, agua_comprada = 0, acucar_comprado = 0, vendas = 0, i;
-    float lucro_total = 0, preco, custo_por_unidade = 0.2 + 0.35 + 0.1, chance1 = 0, chance2 = 0, verificar_orcamento, orcamento = 20;
-    bool fornecedor = true, sem_stock = false, morango = false, laranja = false, panfleto = false, redes = false;
+    float lucro = 0, lucro_total = 0, preco, custo_por_unidade = 0.2 + 0.35 + 0.1, chance1 = 0, chance2 = 0, verificar_orcamento, orcamento = 20;
+    bool fornecedor = true, sem_stock = false;
+    int escolha;
+    srand(time(NULL)); // Inicializa o gerador de números aleatórios
 
     FILE *fptr = fopen("Rules.txt", "r");
     if (!fptr) {
@@ -240,7 +220,6 @@ int main(void) {
     system("cls"); // Limpa a tela
 
     printf("Nome do jogador: ");
-    fflush(stdout); // Garante que a saída foi enviada antes do getchar
     fgets(jogador, 19, stdin); // Limita o nome para evitar estouro de buffer
 
     system("cls");
@@ -253,12 +232,68 @@ int main(void) {
     fclose(fptr);
 
     printf("\n\nPressione ENTER para continuar...");
-    fflush(stdout); // Garante que a saída foi enviada antes do getchar
     getchar();
 
-    system("cls");
-
     for (i = 1; (sem_stock == false) || (orcamento > 0.35); i++) {
+
+        if (i >= 2) {
+            do{
+                system("cls");
+                loja_extras();
+                scanf("%d", &escolha);
+                limpar_buffer();
+
+                switch (escolha) {
+                    case 1:
+                        if (orcamento >= 25) {
+                            orcamento -= 25;
+                            lucro += 0.1;
+                            printf("Compraste sumo de laranja! O teu novo saldo é %.2f€\n", orcamento);
+                            getchar();
+                        } else if (orcamento <= 25) {
+                            printf("Saldo insuficiente para comprar Sumo de Laranja.\n");
+                            getchar();
+                        }
+                        break;
+
+                    case 2:
+                        if (orcamento >= 35) {
+                            orcamento -= 35;
+                            lucro += 0.3;
+                            printf("Compraste sumo de ananás e coco! O teu novo saldo é %.2f€\n", orcamento);
+                            getchar();
+                        } else if (orcamento <= 35) {
+                            printf("Saldo insuficiente para comprar Sumo de Ananás e Coco.\n");
+                            getchar();
+                        }
+                        break;
+
+                    case 3:
+                        if (orcamento >= 50) {
+                            orcamento -= 50;
+                            chance2 += chance2 + 0.50;
+                            printf("Começaste a fazer marketing digital! O teu novo saldo é %.2f€\n", orcamento);
+                            getchar();
+                        } else if (orcamento <= 50) {
+                            printf("Saldo insuficiente para começar a fazer marketing digital.\n");
+                            getchar();
+                        }
+                        break;
+
+                    case 4:
+                        printf("Escolheste não comprar nada!");
+                        getchar();
+                        break;
+
+                    default:
+                        printf("Opção inválida. Por favor, tenta novamente");
+                        getchar();
+                        break;
+                }
+            }while (escolha != 1 && escolha != 2 && escolha != 3 && escolha != 4);
+        }
+
+        system("cls");
 
         if (i == 7) {
             vitoria(jogador, i, lucro_total);
@@ -270,13 +305,13 @@ int main(void) {
         printf("Previsão do dia de amanhã:\n");
         switch (tempo) {
             case 1: printf("Tempo: Ensolarado\n"); chance1 = 0.50; break;
-            case 2: printf("Tempo: Enublado\n"); chance1 = 0.20; break;
+            case 2: printf("Tempo: Nublado\n"); chance1 = 0.20; break;
             case 3: printf("Tempo: Chuvoso\n"); chance1 = 0.10; break;
             case 4: printf("Tempo: Ventoso\n"); chance1 = 0.15; break;
         }
 
         //Verifica se é o 1º dia, se for é retirado o evento de obras na rua para não causar game over
-        if (i <= 1) {
+        if (i == 1) {
             switch (evento) {
                 case 1: printf("Concerto de música (+35%% de chance de vendas)\n"); chance2 = 0.35; break;
                 case 2: printf("Evento de jogos e animes (+50%% de chance de vendas)\n"); chance2 = 0.5; break;
@@ -295,7 +330,6 @@ int main(void) {
         }
 
         printf("\nPressione ENTER para continuar...");
-        fflush(stdout);
         getchar(); // Aguarda ENTER
 
         system("cls");
@@ -310,10 +344,9 @@ int main(void) {
 
             do {
                 printf("\nQuantidade de limões a comprar: ");
-                fflush(stdout);
                 if (scanf("%d", &limoes_comprados) != 1 || limoes_comprados < 0) {
                     printf("\nIntroduza um número positivo");
-                    fflush(stdout);
+                    limpar_buffer();
                     getchar();
                     continue;
                 }
@@ -323,7 +356,6 @@ int main(void) {
                     printf("\nSaldo insuficiente");
                     printf("\nSaldo atual: %.2f €", orcamento);
                     printf("\nCusto total: %.2f €", limoes_comprados * 0.2);
-                    fflush(stdout);
                     getchar();
                     continue;
                 }
@@ -345,10 +377,9 @@ int main(void) {
 
             do {
                 printf("\nQuantidade de açúcar a comprar: ");
-                fflush(stdout);
                 if (scanf("%d", &acucar_comprado) != 1 || acucar_comprado < 0) {
                     printf("\nIntroduza um número positivo");
-                    fflush(stdout);
+                    limpar_buffer();
                     getchar();
                     continue;
                 }
@@ -358,7 +389,6 @@ int main(void) {
                     printf("\nSaldo insuficiente");
                     printf("\nSaldo atual: %.2f €", orcamento);
                     printf("\nCusto total: %.2f €", acucar_comprado * 0.35);
-                    fflush(stdout);
                     getchar();
                     continue;
                 }
@@ -380,10 +410,9 @@ int main(void) {
 
             do {
                 printf("\nQuantidade de água a comprar: ");
-                fflush(stdout);
                 if (scanf("%d", &agua_comprada) != 1 || agua_comprada < 0) {
                     printf("\nIntroduza um número positivo");
-                    fflush(stdout);
+                    limpar_buffer();
                     getchar();
                     continue;
                 }
@@ -393,7 +422,6 @@ int main(void) {
                     printf("\nSaldo insuficiente");
                     printf("\nSaldo atual: %.2f €", orcamento);
                     printf("\nCusto total: %.2f €", agua_comprada * 0.1);
-                    fflush(stdout);
                     getchar();
                     continue;
                 }
@@ -409,14 +437,12 @@ int main(void) {
             printf("Dia %d\n", i);
 
             printf("\nSaldo disponivel: %.2f €\n", orcamento);
-            fflush(stdout);
             getchar();
         } else {
             printf("\nHoje o fornecedor não apareceu.");
 
             if (limoes.quantidade == 0 || acucar.quantidade == 0 || agua.quantidade == 0) {
                 printf("\nSem stock suficiente.");
-                fflush(stdout);
                 getchar();
                 game_over(jogador, i, lucro_total);
             } else {
@@ -426,7 +452,6 @@ int main(void) {
         }
 
         printf("\nPressione ENTER para continuar...");
-        fflush(stdout);
         getchar();
 
         system("cls");
@@ -435,10 +460,9 @@ int main(void) {
 
         do {
             printf("\nQuantas limonadas queres vender? ");
-            fflush(stdout);
             if (scanf("%d", &limonadas) != 1 || limonadas <= 0) {
                 printf("Introduza um número positivo");
-                fflush(stdout);
+                limpar_buffer();
                 getchar();
                 continue;
             }
@@ -446,7 +470,6 @@ int main(void) {
             if (limonadas > limoes.quantidade || limonadas > agua.quantidade || limonadas > acucar.quantidade) {
                 printf("\nStock insuficiente.");
                 stock(limoes.quantidade,acucar.quantidade,agua.quantidade);
-                fflush(stdout);
                 getchar();
                 continue;
             }
@@ -461,11 +484,11 @@ int main(void) {
 
         do {
             printf("\nQual o preço por unidade? ");
-            fflush(stdout);
 
             if (scanf("%f", &preco) != 1 || preco < 0) {
                 printf("Introduza um número positivo\n");
-                fflush(stdout);
+                limpar_buffer();
+                getchar();
                 continue;
             }
 
@@ -476,7 +499,7 @@ int main(void) {
         vendas = venda_limonadas(limonadas, chance1, chance2, preco);
 
         int desperdicio = limonadas - vendas;
-        float lucro = ((preco - custo_por_unidade) * vendas) - (custo_por_unidade * desperdicio);
+        lucro = ((preco - custo_por_unidade) * vendas) - (custo_por_unidade * desperdicio);
         lucro_total += lucro;
         orcamento += (vendas * preco);
 
@@ -487,16 +510,12 @@ int main(void) {
         stock(limoes.quantidade,acucar.quantidade,agua.quantidade);
 
         printf("\n\nPressione ENTER para continuar...");
-        fflush(stdout);
-        getchar();
+        limpar_buffer();
         getchar();
 
         system("cls");
 
-        //loja(i, panfleto, redes, morango, laranja);
-
-        //system("cls");
-
+        //verifica se tem stock
         if (limoes.quantidade == 0 || acucar.quantidade == 0 || agua.quantidade == 0) {
             sem_stock = true;
         }
@@ -504,10 +523,10 @@ int main(void) {
 
     printf("\nSem saldo e stock suficiente");
     printf("\nPressione ENTER para continuar...");
-    fflush(stdout);
     getchar();
 
     game_over(jogador, i, lucro_total);
+
 
     return 0;
 }
