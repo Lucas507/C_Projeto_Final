@@ -182,8 +182,8 @@ struct Produtos {
 void loja_extras() {
     puts("----- Loja de Extras -----");
     puts("Chegaste ao 2º dia com o teu negócio, é hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
-    printf("1. Sumo de Laranja (+10%% de lucro) - 25€\n");
-    printf("2. Sumo de Ananás e Coco (+30%% de lucro) - 35€\n");
+    printf("1. Sumo de Laranja (+10%% de lucro) - 15€\n");
+    printf("2. Sumo de Ananás e Coco (+30%% de lucro) - 25€\n");
     printf("3. Começar a fazer marketing digital (+50%% de clientes) - 50€\n");
     printf("4. Não comprar nada!\n");
     printf("Por favor, escolhe uma opção acima (1-4): ");
@@ -215,7 +215,6 @@ int main(void) {
 
     ecra_inicial();
 
-    //serve para formatar o texto na consola
     system("chcp 65001");
 
     system("cls"); // Limpa a tela
@@ -246,24 +245,24 @@ int main(void) {
 
                 switch (escolha) {
                     case 1:
-                        if (orcamento >= 25) {
-                            orcamento -= 25;
+                        if (orcamento >= 15) {
+                            orcamento -= 15;
                             lucro += 0.1;
                             printf("Compraste sumo de laranja! O teu novo saldo é %.2f€\n", orcamento);
                             getchar();
-                        } else if (orcamento <= 25) {
+                        } else if (orcamento <= 15) {
                             printf("Saldo insuficiente para comprar Sumo de Laranja.\n");
                             getchar();
                         }
                         break;
 
                     case 2:
-                        if (orcamento >= 35) {
-                            orcamento -= 35;
+                        if (orcamento >= 25) {
+                            orcamento -= 25;
                             lucro += 0.3;
                             printf("Compraste sumo de ananás e coco! O teu novo saldo é %.2f€\n", orcamento);
                             getchar();
-                        } else if (orcamento <= 35) {
+                        } else if (orcamento <= 25) {
                             printf("Saldo insuficiente para comprar Sumo de Ananás e Coco.\n");
                             getchar();
                         }
@@ -500,7 +499,7 @@ int main(void) {
         vendas = venda_limonadas(limonadas, chance1, chance2, preco);
 
         int desperdicio = limonadas - vendas;
-        lucro = ((preco - custo_por_unidade) * vendas) - (custo_por_unidade * desperdicio);
+        lucro += ((preco - custo_por_unidade) * vendas) - (custo_por_unidade * desperdicio);
         lucro_total += lucro;
         orcamento += (vendas * preco);
 
@@ -509,6 +508,7 @@ int main(void) {
         printf("\nLucro: %.2f €", lucro);
         printf("\nSaldo Total: %.2f €\n", orcamento);
         stock(limoes.quantidade,acucar.quantidade,agua.quantidade);
+        lucro = 0;
 
         printf("\n\nPressione ENTER para continuar...");
         limpar_buffer();
