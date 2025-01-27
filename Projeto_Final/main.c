@@ -215,6 +215,7 @@ int main(void) {
 
     ecra_inicial();
 
+    //serve para formatar o texto na consola
     system("chcp 65001");
 
     system("cls"); // Limpa a tela
