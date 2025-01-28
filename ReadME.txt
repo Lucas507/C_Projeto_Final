@@ -4,13 +4,13 @@ O programa feito é o jogo da limonada onde tens de gerir uma banca de limonada.
 Funcionalidades do programa:
 Gestão do Negócio: Antes de cada dia de operação, o programa mostra as condições meteorológicas e os eventos em curso, os quais podem influenciar o número de clientes. O jogador deve analisar esta informação e planear a sua estratégia para o dia.
 
-Gestão de Stock: No início de cada dia, é exibido o stock atual. O jogador pode comprar ingredientes do fornecedor, garantindo que tem os recursos necessários para produzir limonadas.
+Gestão de Stock: No início de cada dia, é exibido o stock atual. O jogador pode comprar ingredientes do fornecedor, garantindo que tem os recursos necessários para produzir bebidas.
 
-Venda de Limonadas: Durante o dia, as limonadas são vendidas de acordo com o stock disponível. O sucesso das vendas das limonadas depende do preço colocado, se for muito caro os clientes não vão comprar limonadas, e das condições do dia.
+Venda de Bebidas: Durante o dia, as bebidas são vendidas de acordo com o stock disponível. O sucesso das vendas das bebidas depende do preço colocado, se for muito caro os clientes não vão comprar bebidas, e das condições do dia.
 
 Loja de Upgrades: O jogador pode investir em melhorias que afetam o negócio;
-		  Aumento do lucro por venda: Cada limonada vale mais;
-        	  Aumento do número de clientes: Maior afluência ao negócio.
+		  Aumento do lucro por venda;
+        	  Aumento do número de clientes: Maior afluência de clientes.
 
 Fim do Jogo: O jogo termina se o jogador ficar sem stock e sem saldo suficiente para comprar mais ingredientes ou se não tiver stock e o evento de obras na rua acontecer.
 

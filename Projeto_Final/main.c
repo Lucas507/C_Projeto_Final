@@ -45,18 +45,32 @@ int eventos() {
 }
 
 // Tabela de preços
-void tabela_precos(char *nome_limoes, float preco_limoes, char *nome_acucar, float preco_acucar, char *nome_agua, float preco_agua) {
+void tabela_precos(char *nome_limoes, float preco_limoes, char *nome_acucar, float preco_acucar, char *nome_agua, float preco_agua, char *nome_laranja, float preco_laranja, char *nome_ananas, float preco_ananas, char *nome_coco, float preco_coco, bool laranja_comprado, bool ananas_comprado, bool coco_comprado) {
     printf("Preço dos %s: %.2f€\n", nome_limoes, preco_limoes);
     printf("Preço do %s: %.2f€\n", nome_acucar, preco_acucar);
     printf("Preço da %s: %.2f€\n", nome_agua, preco_agua);
+    if (laranja_comprado == true) {
+        printf("Preço do %s: %.2f€\n", nome_laranja, preco_laranja);
+    }
+    if (coco_comprado == true) {
+        printf("Preço da %s: %.2f€\n", nome_ananas, preco_ananas);
+        printf("Preço do %s: %.2f€\n", nome_coco, preco_coco);
+    }
 }
 
 // Função para mostrar o stock
-void stock(int limoes, int acucar, int agua) {
+void stock(int limoes, int acucar, int agua, int laranja, int ananas, int coco, bool laranja_comprado, bool ananas_comprado, bool coco_comprado) {
     printf("\nO teu Stock: ");
     printf("\nLimões: %d", limoes);
     printf("\nAçúcar: %d", acucar);
     printf("\nÁgua: %d", agua);
+    if (laranja_comprado == true) {
+        printf("\nLaranja: %d", laranja);
+    }
+    if (ananas_comprado == true) {
+        printf("\nAnanás: %d", ananas);
+        printf("\nCoco: %d", coco);
+    }
 }
 
 // Função para determinar o tempo
@@ -71,7 +85,6 @@ int venda_limonadas(int limonadas, float chance1, float chance2, float preco) {
 
     if (preco > 1.2) {
         printf("Ninguém comprou nenhuma limonada. Os clientes reclamaram que o preço é demasiado caro");
-        fflush(stdout); // Garante que o texto é mostrado imediatamente
         printf("\n\nPressione ENTER para continuar...");
         limpar_buffer();
         getchar(); // Aguarda o ENTER
@@ -81,6 +94,54 @@ int venda_limonadas(int limonadas, float chance1, float chance2, float preco) {
 
     //vai gerar um número random entre 0 e 1 e vai comparar se é menor do que a chance de venda, se for menor a venda é realizada
     for (int i = 0; i < limonadas; i++) {
+        float venda = (float)rand() / RAND_MAX;
+        if (venda < chance_total) {
+            venda_sucedida++;
+        }
+    }
+    return venda_sucedida;//retorna o valor das vendas sucedidas
+}
+
+// Função para calcular vendas de sumos de laranja
+int venda_sumo_laranja(int sumo_laranja, float chance1, float chance2, float preco) {
+    float chance_total = chance1 + chance2;
+    int venda_sucedida = 0;
+
+    if (preco > 2) {
+        printf("Ninguém comprou nenhum sumo de laranja. Os clientes reclamaram que o preço é demasiado caro");
+        printf("\n\nPressione ENTER para continuar...");
+        limpar_buffer();
+        getchar(); // Aguarda o ENTER
+        system("cls"); // Limpa a tela após o ENTER
+        return venda_sucedida;//retorna o valor das vendas sucedidas
+    }
+
+    //vai gerar um número random entre 0 e 1 e vai comparar se é menor do que a chance de venda, se for menor a venda é realizada
+    for (int i = 0; i < sumo_laranja; i++) {
+        float venda = (float)rand() / RAND_MAX;
+        if (venda < chance_total) {
+            venda_sucedida++;
+        }
+    }
+    return venda_sucedida;//retorna o valor das vendas sucedidas
+}
+
+// Função para calcular vendas de sumos de ananas e coco
+int venda_ananas_coco(int sumo_ananas, float chance1, float chance2, float preco) {
+    float chance_total = chance1 + chance2;
+    int venda_sucedida = 0;
+
+    if (preco > 2.50) {
+        printf("Ninguém comprou nenhum sumo de laranja. Os clientes reclamaram que o preço é demasiado caro");
+        printf("\n\nPressione ENTER para continuar...");
+        limpar_buffer();
+        getchar(); // Aguarda o ENTER
+        system("cls"); // Limpa a tela após o ENTER
+        return venda_sucedida;//retorna o valor das vendas sucedidas
+    }
+
+    //vai gerar um número random entre 0 e 1 e vai comparar se é menor do que a chance de venda, se for menor a venda é realizada
+    for (int i = 0; i < sumo_ananas; i++) {
         float venda = (float)rand() / RAND_MAX;
         if (venda < chance_total) {
             venda_sucedida++;
@@ -172,25 +233,90 @@ int game_over(char *jogador, int dia, float lucro_total) {
     execl("Projeto_Final", "Projeto_Final", NULL); // Substitui o processo atual pelo novo
 }
 
+void loja_extras(bool laranja, bool ananas_coco, bool marketing) {
+    if (laranja == true && ananas_coco == true && marketing == true) {
+        puts("----- Loja de Extras -----");
+        puts("Chegaste ao 2º dia com o teu negócio, é hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
+        printf("1. Sumo de Laranja - Comprado\n");
+        printf("2. Sumo de Ananás e Coco (+30%% de lucro) - Comprado\n");
+        printf("3. Começar a fazer marketing digital (+50%% de clientes) - Comprado\n");
+        printf("4. Não comprar nada!\n");
+        printf("Por favor, escolhe uma opção acima (1-4): ");
+    }
+    else if (laranja == true && ananas_coco == true) {
+        puts("----- Loja de Extras -----");
+        puts("Chegaste ao 2º dia com o teu negócio, é hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
+        printf("1. Sumo de Laranja (+10%% de lucro) - Comprado\n");
+        printf("2. Sumo de Ananás e Coco - Comprado\n");
+        printf("3. Começar a fazer marketing digital (+50%% de clientes) - 50€\n");
+        printf("4. Não comprar nada!\n");
+        printf("Por favor, escolhe uma opção acima (1-4): ");
+    }
+    else if (laranja == true && marketing == true) {
+        puts("----- Loja de Extras -----");
+        puts("Chegaste ao 2º dia com o teu negócio, é hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
+        printf("1. Sumo de Laranja (+10%% de lucro) - Comprado\n");
+        printf("2. Sumo de Ananás e Coco - 25€\n");
+        printf("3. Começar a fazer marketing digital (+50%% de clientes) - Comprado\n");
+        printf("4. Não comprar nada!\n");
+        printf("Por favor, escolhe uma opção acima (1-4): ");
+    }
+    else if (marketing == true && ananas_coco == true) {
+        puts("----- Loja de Extras -----");
+        puts("É hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
+        printf("1. Sumo de Laranja (+10%% de lucro) - 15€\n");
+        printf("2. Sumo de Ananás e Coco - Comprado\n");
+        printf("3. Começar a fazer marketing digital (+50%% de clientes) - 50€\n");
+        printf("4. Não comprar nada!\n");
+        printf("Por favor, escolhe uma opção acima (1-4): ");
+    }
+    else if (laranja == true) {
+        puts("----- Loja de Extras -----");
+        puts("É hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
+        printf("1. Sumo de Laranja - Comprado\n");
+        printf("2. Sumo de Ananás e Coco - 25€\n");
+        printf("3. Começar a fazer marketing digital (+50%% de clientes) - 50€\n");
+        printf("4. Não comprar nada!\n");
+        printf("Por favor, escolhe uma opção acima (1-4): ");
+    }
+    else if (ananas_coco == true) {
+        puts("----- Loja de Extras -----");
+        puts("Chegaste ao 2º dia com o teu negócio, é hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
+        printf("1. Sumo de Laranja (+10%% de lucro) - 15€\n");
+        printf("2. Sumo de Ananás e Coco (+30%% de lucro) - Comprado\n");
+        printf("3. Começar a fazer marketing digital (+50%% de clientes) - 50€\n");
+        printf("4. Não comprar nada!\n");
+        printf("Por favor, escolhe uma opção acima (1-4): ");
+    }
+    else {
+        puts("----- Loja de Extras -----");
+        puts("Chegaste ao 2º dia com o teu negócio, é hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
+        printf("1. Sumo de Laranja (+10%% de lucro) - 15€\n");
+        printf("2. Sumo de Ananás e Coco (+30%% de lucro) - 25€\n");
+        printf("3. Começar a fazer marketing digital (+50%% de clientes) - 50€\n");
+        printf("4. Não comprar nada!\n");
+        printf("Por favor, escolhe uma opção acima (1-4): ");
+    }
+}
+
 //Estrutura para criar os produtos necessarios para fazer uma bebida
 struct Produtos {
     char nome_produto[20];
     float preco;
     int quantidade;
+    bool comprado;
 };
 
-void loja_extras() {
-    puts("----- Loja de Extras -----");
-    puts("Chegaste ao 2º dia com o teu negócio, é hora de o expandires, para aumentares a visita e clientes e os teus lucros...");
-    printf("1. Sumo de Laranja (+10%% de lucro) - 15€\n");
-    printf("2. Sumo de Ananás e Coco (+30%% de lucro) - 25€\n");
-    printf("3. Começar a fazer marketing digital (+50%% de clientes) - 50€\n");
-    printf("4. Não comprar nada!\n");
-    printf("Por favor, escolhe uma opção acima (1-4): ");
-}
+//Estrutura para criar os produtos necessarios para fazer uma bebida
+struct Bebidas {
+    char nome_bebida[20];
+    float preco;
+    int quantidade;
+};
 
 int main(void) {
     struct Produtos limoes, agua, acucar, coco, ananas, laranja;
+    struct Bebidas limonada, sumo_laranja, ananas_coco;
     strcpy(limoes.nome_produto, "Limões");//Utilizamos o strcpy para passar o valor para limoes.nome_produto
     limoes.preco = 0.2;
     limoes.quantidade = 0;
@@ -200,10 +326,28 @@ int main(void) {
     strcpy(agua.nome_produto, "Água");//Utilizamos o strcpy para passar o valor para agua.nome_produto
     agua.preco = 0.1;
     agua.quantidade = 0;
+    strcpy(laranja.nome_produto, "Laranja");//Utilizamos o strcpy para passar o valor para agua.nome_produto
+    laranja.preco = 0.2;
+    laranja.quantidade = 0;
+    laranja.comprado = false;
+    strcpy(coco.nome_produto, "Coco");//Utilizamos o strcpy para passar o valor para agua.nome_produto
+    coco.preco = 0.25;
+    coco.quantidade = 0;
+    coco.comprado = false;
+    strcpy(ananas.nome_produto, "Ananás");//Utilizamos o strcpy para passar o valor para agua.nome_produto
+    ananas.preco = 0.30;
+    ananas.quantidade = 0;
+    ananas.comprado = false;
+    strcpy(limonada.nome_bebida, "Limonada");//Utilizamos o strcpy para passar o valor para agua.nome_produto
+    limonada.quantidade = 0;
+    strcpy(limonada.nome_bebida, "Sumo de laranja");//Utilizamos o strcpy para passar o valor para agua.nome_produto
+    sumo_laranja.quantidade = 0;
+    strcpy(limonada.nome_bebida, "Sumo de Ananás e Coco");//Utilizamos o strcpy para passar o valor para agua.nome_produto
+    ananas_coco.quantidade = 0;
     char jogador[20];
-    int limonadas, limoes_comprados = 0, agua_comprada = 0, acucar_comprado = 0, vendas = 0, i;
-    float lucro = 0, lucro_total = 0, preco, custo_por_unidade = 0.2 + 0.35 + 0.1, chance1 = 0, chance2 = 0, verificar_orcamento, orcamento = 20;
-    bool fornecedor = true, sem_stock = false;
+    int limoes_comprados = 0, agua_comprada = 0, acucar_comprado = 0, vendas_limonada = 0, vendas_sumo_laranja = 0, vendas_ananas_coco = 0, laranjas_compradas, cocos_comprados, ananas_comprados, i;
+    float lucro_do_dia = 0, lucro_limonada = 0, lucro_laranja = 0, lucro_coco_ananas = 0, lucro_total = 0, custo_por_unidade_limonada = limoes.preco + agua.preco + acucar.preco, custo_por_unidade_ananas = ananas.preco + coco.preco, chance1 = 0, chance2 = 0, verificar_orcamento, orcamento = 20;
+    bool fornecedor = true, sem_stock = false, marketing = false;
     int escolha;
     srand(time(NULL)); // Inicializa o gerador de números aleatórios
 
@@ -239,44 +383,67 @@ int main(void) {
         if (i >= 2) {
             do{
                 system("cls");
-                loja_extras();
+                loja_extras(laranja.comprado, coco.comprado, marketing);
                 scanf("%d", &escolha);
                 limpar_buffer();
 
                 switch (escolha) {
                     case 1:
-                        if (orcamento >= 15) {
-                            orcamento -= 15;
-                            lucro += 0.1;
-                            printf("Compraste sumo de laranja! O teu novo saldo é %.2f€\n", orcamento);
+                        if (laranja.comprado == true) {
+                            printf("Já adquiriste sumo de laranja para o teu negócio.\n");
                             getchar();
-                        } else if (orcamento <= 15) {
+                            continue;
+                        }
+                        if (orcamento <= 15) {
                             printf("Saldo insuficiente para comprar Sumo de Laranja.\n");
                             getchar();
+                            continue;
+                        }
+                        if (orcamento >= 15) {
+                            orcamento -= 15;
+                            printf("Compraste sumo de laranja! O teu novo saldo é %.2f€\n", orcamento);
+                            getchar();
+                            laranja.comprado = true;
                         }
                         break;
 
                     case 2:
-                        if (orcamento >= 25) {
-                            orcamento -= 25;
-                            lucro += 0.3;
-                            printf("Compraste sumo de ananás e coco! O teu novo saldo é %.2f€\n", orcamento);
+                        if (ananas.comprado == true) {
+                            printf("Já adquiriste sumo de ananás e coco para o teu negócio.\n");
                             getchar();
-                        } else if (orcamento <= 25) {
+                            continue;
+                        }
+                        if (orcamento <= 25) {
                             printf("Saldo insuficiente para comprar Sumo de Ananás e Coco.\n");
                             getchar();
+                            continue;
+                        }
+                        if (orcamento >= 25) {
+                            orcamento -= 25;
+                            printf("Compraste sumo de ananás e coco! O teu novo saldo é %.2f€\n", orcamento);
+                            getchar();
+                            ananas.comprado = true;
+                            coco.comprado = true;
                         }
                         break;
 
                     case 3:
+                        if (marketing == true) {
+                            printf("Já começaste a fazer marketing digital.\n");
+                            getchar();
+                            continue;
+                        }
+                        if (orcamento <= 50) {
+                            printf("Saldo insuficiente para começar a fazer marketing digital.\n");
+                            getchar();
+                            continue;
+                        }
                         if (orcamento >= 50) {
                             orcamento -= 50;
                             chance2 += chance2 + 0.50;
                             printf("Começaste a fazer marketing digital! O teu novo saldo é %.2f€\n", orcamento);
                             getchar();
-                        } else if (orcamento <= 50) {
-                            printf("Saldo insuficiente para começar a fazer marketing digital.\n");
-                            getchar();
+                            marketing = true;
                         }
                         break;
 
@@ -290,7 +457,9 @@ int main(void) {
                         getchar();
                         break;
                 }
-            }while (escolha != 1 && escolha != 2 && escolha != 3 && escolha != 4);
+
+                break;
+            }while (1);
         }
 
         system("cls");
@@ -337,10 +506,11 @@ int main(void) {
         printf("Dia %d\n", i);
 
         if (fornecedor == true) {
-            tabela_precos(limoes.nome_produto, limoes.preco, acucar.nome_produto, acucar.preco, agua.nome_produto, agua.preco);
-            stock(limoes.quantidade,acucar.quantidade,agua.quantidade);
+            tabela_precos(limoes.nome_produto, limoes.preco, acucar.nome_produto, acucar.preco, agua.nome_produto, agua.preco, laranja.nome_produto, laranja.preco, ananas.nome_produto, ananas.preco, coco.nome_produto, coco.preco, laranja.comprado, ananas.comprado, coco.comprado);
+            stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
 
             printf("\nSaldo disponivel: %.2f€", orcamento);
+
 
             do {
                 printf("\nQuantidade de limões a comprar: ");
@@ -351,11 +521,11 @@ int main(void) {
                     continue;
                 }
 
-                verificar_orcamento = orcamento - (limoes_comprados * 0.2);
+                verificar_orcamento = orcamento - (limoes_comprados * limoes.preco);
                 if (verificar_orcamento < limoes_comprados * limoes.preco) {
                     printf("\nSaldo insuficiente");
                     printf("\nSaldo atual: %.2f €", orcamento);
-                    printf("\nCusto total: %.2f €", limoes_comprados * 0.2);
+                    printf("\nCusto total: %.2f €", limoes_comprados * limoes.preco);
                     getchar();
                     continue;
                 }
@@ -364,14 +534,13 @@ int main(void) {
             } while (1);
 
             limoes.quantidade += limoes_comprados;
-            orcamento -= limoes_comprados * 0.2;
+            orcamento -= limoes_comprados * limoes.preco;
 
             system("cls");
 
             printf("Dia %d\n", i);
-
-            tabela_precos(limoes.nome_produto, limoes.preco, acucar.nome_produto, acucar.preco, agua.nome_produto, agua.preco);
-            stock(limoes.quantidade,acucar.quantidade,agua.quantidade);
+            tabela_precos(limoes.nome_produto, limoes.preco, acucar.nome_produto, acucar.preco, agua.nome_produto, agua.preco, laranja.nome_produto, laranja.preco, ananas.nome_produto, ananas.preco, coco.nome_produto, coco.preco, laranja.comprado, ananas.comprado, coco.comprado);
+            stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
 
             printf("\nSaldo disponivel: %.2f€", orcamento);
 
@@ -384,11 +553,11 @@ int main(void) {
                     continue;
                 }
 
-                verificar_orcamento = orcamento - (acucar_comprado * 0.35);
-                if (verificar_orcamento < acucar_comprado * 0.35) {
+                verificar_orcamento = orcamento - (acucar_comprado * acucar.preco);
+                if (verificar_orcamento < acucar_comprado * acucar.preco) {
                     printf("\nSaldo insuficiente");
                     printf("\nSaldo atual: %.2f €", orcamento);
-                    printf("\nCusto total: %.2f €", acucar_comprado * 0.35);
+                    printf("\nCusto total: %.2f €", acucar_comprado * acucar.preco);
                     getchar();
                     continue;
                 }
@@ -397,14 +566,13 @@ int main(void) {
             } while (1);
 
             acucar.quantidade += acucar_comprado;
-            orcamento -= acucar_comprado * 0.35;
+            orcamento -= acucar_comprado * acucar.preco;
 
             system("cls");
 
             printf("Dia %d\n", i);
-
-            tabela_precos(limoes.nome_produto, limoes.preco, acucar.nome_produto, acucar.preco, agua.nome_produto, agua.preco);
-            stock(limoes.quantidade,acucar.quantidade,agua.quantidade);
+            tabela_precos(limoes.nome_produto, limoes.preco, acucar.nome_produto, acucar.preco, agua.nome_produto, agua.preco, laranja.nome_produto, laranja.preco, ananas.nome_produto, ananas.preco, coco.nome_produto, coco.preco, laranja.comprado, ananas.comprado, coco.comprado);
+            stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
 
             printf("\nSaldo disponivel: %.2f", orcamento);
 
@@ -417,11 +585,11 @@ int main(void) {
                     continue;
                 }
 
-                verificar_orcamento = orcamento - (agua_comprada * 0.1);
-                if (verificar_orcamento < agua_comprada * 0.1) {
+                verificar_orcamento = orcamento - (agua_comprada * agua.preco);
+                if (verificar_orcamento < agua_comprada * agua.preco) {
                     printf("\nSaldo insuficiente");
                     printf("\nSaldo atual: %.2f €", orcamento);
-                    printf("\nCusto total: %.2f €", agua_comprada * 0.1);
+                    printf("\nCusto total: %.2f €", agua_comprada * agua.preco);
                     getchar();
                     continue;
                 }
@@ -430,7 +598,107 @@ int main(void) {
             } while (1);
 
             agua.quantidade += agua_comprada;
-            orcamento -= agua_comprada * 0.1;
+            orcamento -= agua_comprada * agua.preco;
+
+            if (laranja.comprado == true) {
+                system("cls");
+
+                printf("Dia %d\n", i);
+                tabela_precos(limoes.nome_produto, limoes.preco, acucar.nome_produto, acucar.preco, agua.nome_produto, agua.preco, laranja.nome_produto, laranja.preco, ananas.nome_produto, ananas.preco, coco.nome_produto, coco.preco, laranja.comprado, ananas.comprado, coco.comprado);
+                stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
+
+                printf("\nSaldo disponivel: %.2f", orcamento);
+
+                do {
+                    printf("\nQuantidade de laranjas a comprar: ");
+                    if (scanf("%d", &laranjas_compradas) != 1 || laranjas_compradas < 0) {
+                        printf("\nIntroduza um número positivo");
+                        limpar_buffer();
+                        getchar();
+                        continue;
+                    }
+
+                    verificar_orcamento = orcamento - (laranjas_compradas * laranja.preco);
+                    if (verificar_orcamento < laranjas_compradas * laranja.preco) {
+                        printf("\nSaldo insuficiente");
+                        printf("\nSaldo atual: %.2f €", orcamento);
+                        printf("\nCusto total: %.2f €", laranjas_compradas * laranja.preco);
+                        getchar();
+                        continue;
+                    }
+
+                    break;
+                } while (1);
+
+                laranja.quantidade += laranjas_compradas;
+                orcamento -= laranjas_compradas * laranja.preco;
+            }
+
+            if (ananas.comprado == true) {
+                system("cls");
+
+                printf("Dia %d\n", i);
+                tabela_precos(limoes.nome_produto, limoes.preco, acucar.nome_produto, acucar.preco, agua.nome_produto, agua.preco, laranja.nome_produto, laranja.preco, ananas.nome_produto, ananas.preco, coco.nome_produto, coco.preco, laranja.comprado, ananas.comprado, coco.comprado);
+                stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
+
+                printf("\nSaldo disponivel: %.2f", orcamento);
+
+                do {
+                    printf("\nQuantidade de ananás a comprar: ");
+                    if (scanf("%d", &ananas_comprados) != 1 || ananas_comprados < 0) {
+                        printf("\nIntroduza um número positivo");
+                        limpar_buffer();
+                        getchar();
+                        continue;
+                    }
+
+                    verificar_orcamento = orcamento - (ananas_comprados * ananas.preco);
+                    if (verificar_orcamento < ananas_comprados * ananas.preco) {
+                        printf("\nSaldo insuficiente");
+                        printf("\nSaldo atual: %.2f €", orcamento);
+                        printf("\nCusto total: %.2f €", ananas_comprados * ananas.preco);
+                        getchar();
+                        continue;
+                    }
+
+                    break;
+                } while (1);
+
+                ananas.quantidade += ananas_comprados;
+                orcamento -= ananas_comprados * ananas.preco;
+
+                system("cls");
+
+                printf("Dia %d\n", i);
+                tabela_precos(limoes.nome_produto, limoes.preco, acucar.nome_produto, acucar.preco, agua.nome_produto, agua.preco, laranja.nome_produto, laranja.preco, ananas.nome_produto, ananas.preco, coco.nome_produto, coco.preco, laranja.comprado, ananas.comprado, coco.comprado);
+                stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
+
+                printf("\nSaldo disponivel: %.2f", orcamento);
+
+                do {
+                    printf("\nQuantidade de coco a comprar: ");
+                    if (scanf("%d", &cocos_comprados) != 1 || cocos_comprados < 0) {
+                        printf("\nIntroduza um número positivo");
+                        limpar_buffer();
+                        getchar();
+                        continue;
+                    }
+
+                    verificar_orcamento = orcamento - (cocos_comprados * coco.preco);
+                    if (verificar_orcamento < cocos_comprados * coco.preco) {
+                        printf("\nSaldo insuficiente");
+                        printf("\nSaldo atual: %.2f €", orcamento);
+                        printf("\nCusto total: %.2f €", cocos_comprados * coco.preco);
+                        getchar();
+                        continue;
+                    }
+
+                    break;
+                } while (1);
+
+                coco.quantidade += cocos_comprados;
+                orcamento -= cocos_comprados * coco.preco;
+            }
 
             system("cls");
 
@@ -441,12 +709,12 @@ int main(void) {
         } else {
             printf("\nHoje o fornecedor não apareceu.");
 
-            if (limoes.quantidade == 0 || acucar.quantidade == 0 || agua.quantidade == 0) {
+            if (limoes.quantidade == 0 || acucar.quantidade == 0 || agua.quantidade == 0 || laranja.quantidade == 0 || ananas.quantidade == 0 || coco.quantidade == 0) {
                 printf("\nSem stock suficiente.");
                 getchar();
                 game_over(jogador, i, lucro_total);
             } else {
-                stock(limoes.quantidade,acucar.quantidade,agua.quantidade);
+                stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
                 fornecedor = true;
             }
         }
@@ -458,18 +726,19 @@ int main(void) {
 
         printf("Dia %d\n", i);
 
+        //venda de limonadas
         do {
             printf("\nQuantas limonadas queres vender? ");
-            if (scanf("%d", &limonadas) != 1 || limonadas <= 0) {
+            if (scanf("%d", &limonada.quantidade) != 1 || limonada.quantidade <= 0) {
                 printf("Introduza um número positivo");
                 limpar_buffer();
                 getchar();
                 continue;
             }
 
-            if (limonadas > limoes.quantidade || limonadas > agua.quantidade || limonadas > acucar.quantidade) {
+            if (limonada.quantidade > limoes.quantidade || limonada.quantidade > agua.quantidade || limonada.quantidade > acucar.quantidade) {
                 printf("\nStock insuficiente.");
-                stock(limoes.quantidade,acucar.quantidade,agua.quantidade);
+                stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
                 getchar();
                 continue;
             }
@@ -478,14 +747,14 @@ int main(void) {
 
         } while (1);
 
-        limoes.quantidade -= limonadas;
-        agua.quantidade -= limonadas;
-        acucar.quantidade -= limonadas;
+        limoes.quantidade -= limonada.quantidade;
+        agua.quantidade -= limonada.quantidade;
+        acucar.quantidade -= limonada.quantidade;
 
         do {
             printf("\nQual o preço por unidade? ");
 
-            if (scanf("%f", &preco) != 1 || preco < 0) {
+            if (scanf("%f", &limonada.preco) != 1 || limonada.preco < 0) {
                 printf("Introduza um número positivo\n");
                 limpar_buffer();
                 getchar();
@@ -496,19 +765,120 @@ int main(void) {
         }
         while (1);
 
-        vendas = venda_limonadas(limonadas, chance1, chance2, preco);
+        vendas_limonada = venda_limonadas(limonada.quantidade, chance1, chance2, limonada.preco);
+        orcamento += (vendas_limonada * limonada.preco);
 
-        int desperdicio = limonadas - vendas;
-        lucro += ((preco - custo_por_unidade) * vendas) - (custo_por_unidade * desperdicio);
-        lucro_total += lucro;
-        orcamento += (vendas * preco);
+        printf("Dia %d\n", i);
+        //venda sumo de laranja
+        if (laranja.comprado == true && laranja.quantidade > 0) {
+            do {
+                system("cls");
+                printf("\nQuantos sumos de laranja queres vender? ");
+                if (scanf("%d", &sumo_laranja.quantidade) != 1 || sumo_laranja.quantidade <= 0) {
+                    printf("Introduza um número positivo");
+                    limpar_buffer();
+                    getchar();
+                    continue;
+                }
 
-        printf("\nForam vendidas %d limonadas.", vendas);
-        printf("\nDesperdiçaste %d limonadas.", desperdicio);
-        printf("\nLucro: %.2f €", lucro);
+                if (sumo_laranja.quantidade > laranja.quantidade) {
+                    printf("\nStock insuficiente.");
+                    stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
+                    getchar();
+                    continue;
+                }
+
+                break;
+
+            } while (1);
+
+            laranja.quantidade -= sumo_laranja.quantidade;
+
+            do {
+                printf("\nQual o preço por unidade? ");
+
+                if (scanf("%f", &sumo_laranja.preco) != 1 || sumo_laranja.preco < 0) {
+                    printf("Introduza um número positivo\n");
+                    limpar_buffer();
+                    getchar();
+                    continue;
+                }
+
+                break;
+            }
+            while (1);
+
+            vendas_sumo_laranja = venda_sumo_laranja(sumo_laranja.quantidade, chance1, chance2, sumo_laranja.preco);
+            orcamento += (vendas_sumo_laranja * laranja.preco);
+        }
+
+        //venda de sumo de ananas e coco
+        if ((ananas.comprado == true && ananas.quantidade > 0) && (coco.comprado == true && coco.quantidade > 0)) {
+            do {
+                system("cls");
+                printf("\nQuantos sumos de ananás e coco queres vender? ");
+                if (scanf("%d", &ananas_coco.quantidade) != 1 || ananas_coco.quantidade <= 0) {
+                    printf("Introduza um número positivo");
+                    limpar_buffer();
+                    getchar();
+                    continue;
+                }
+
+                if (ananas_coco.quantidade > ananas.quantidade || ananas_coco.quantidade > coco.quantidade) {
+                    printf("\nStock insuficiente.");
+                    stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
+                    getchar();
+                    continue;
+                }
+
+                break;
+
+            } while (1);
+
+            ananas.quantidade -= ananas_coco.quantidade;
+            coco.quantidade -= ananas_coco.quantidade;
+
+            do {
+                printf("\nQual o preço por unidade? ");
+
+                if (scanf("%f", &ananas_coco.preco) != 1 || ananas_coco.preco < 0) {
+                    printf("Introduza um número positivo\n");
+                    limpar_buffer();
+                    getchar();
+                    continue;
+                }
+
+                break;
+            }
+            while (1);
+
+            vendas_ananas_coco = venda_ananas_coco(ananas_coco.quantidade, chance1, chance2, ananas_coco.preco);
+            orcamento += (vendas_ananas_coco * ananas_coco.preco);
+        }
+
+        int desperdicio_limonada = limonada.quantidade - vendas_limonada;
+        int desperdicio_laranja = limonada.quantidade - vendas_sumo_laranja;
+        int desperdicio_coco_ananas = ananas_coco.quantidade - vendas_ananas_coco;
+
+        lucro_limonada = ((limonada.preco - custo_por_unidade_limonada) * vendas_limonada) - (custo_por_unidade_limonada * desperdicio_limonada);
+
+        printf("\nForam vendidas %d limonadas.", vendas_limonada);
+        printf("\nDesperdiçaste %d limonadas.", desperdicio_limonada);
+        if (sumo_laranja.quantidade > 0) {
+            printf("\nForam vendidos %d sumos de laranja.", vendas_sumo_laranja);
+            printf("\nDesperdiçaste %d sumos de laranja.", desperdicio_laranja);
+            lucro_laranja = (laranja.preco * vendas_sumo_laranja) - (laranja.preco * desperdicio_laranja) * 0.1;
+        }
+        if (ananas_coco.quantidade > 0) {
+            printf("\nForam vendidos %d sumos de ananás e coco.", vendas_sumo_laranja);
+            printf("\nDesperdiçaste %d sumos de ananás e coco.", desperdicio_laranja);
+            lucro_coco_ananas = ((ananas_coco.preco - custo_por_unidade_ananas) * vendas_ananas_coco) - (custo_por_unidade_ananas * desperdicio_coco_ananas) * 0.3;
+        }
+        lucro_do_dia = lucro_limonada + lucro_coco_ananas + lucro_laranja;
+        lucro_total += lucro_do_dia;
+        printf("\nLucro: %.2f €", lucro_do_dia);
         printf("\nSaldo Total: %.2f €\n", orcamento);
-        stock(limoes.quantidade,acucar.quantidade,agua.quantidade);
-        lucro = 0;
+        stock(limoes.quantidade,acucar.quantidade,agua.quantidade, laranja.quantidade, ananas.quantidade, coco.quantidade, laranja.comprado, ananas.comprado, coco.comprado);
 
         printf("\n\nPressione ENTER para continuar...");
         limpar_buffer();
