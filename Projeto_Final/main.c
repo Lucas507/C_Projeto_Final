@@ -864,8 +864,8 @@ int main(void) {
             lucro_laranja = ((laranja.preco * vendas_sumo_laranja) - (laranja.preco * desperdicio_laranja)) * 1.1;
         }
         if (ananas_coco.quantidade > 0) {
-            printf("\nForam vendidos %d sumos de ananás e coco.", vendas_sumo_laranja);
-            printf("\nDesperdiçaste %d sumos de ananás e coco.", desperdicio_laranja);
+            printf("\nForam vendidos %d sumos de ananás e coco.", vendas_ananas_coco);
+            printf("\nDesperdiçaste %d sumos de ananás e coco.", desperdicio_coco_ananas);
             lucro_coco_ananas = (((ananas_coco.preco - custo_por_unidade_ananas) * vendas_ananas_coco) - (custo_por_unidade_ananas * desperdicio_coco_ananas)) * 1.3;
         }
         lucro_do_dia = lucro_limonada + lucro_coco_ananas + lucro_laranja;
