@@ -150,7 +150,7 @@ int venda_ananas_coco(int sumo_ananas, float chance1, float chance2, float preco
     return venda_sucedida;//retorna o valor das vendas sucedidas
 }
 
-// Função para ganhar o jogo(vitória)
+// Função para terminar o jogo(vitória)
 int vitoria(char *jogador, int dia, float lucro_total) {
     system("cls");
 
@@ -521,8 +521,7 @@ int main(void) {
                     continue;
                 }
 
-                verificar_orcamento = orcamento - (limoes_comprados * limoes.preco);
-                if (verificar_orcamento < limoes_comprados * limoes.preco) {
+                if (orcamento < (limoes_comprados * limoes.preco)) {
                     printf("\nSaldo insuficiente");
                     printf("\nSaldo atual: %.2f €", orcamento);
                     printf("\nCusto total: %.2f €", limoes_comprados * limoes.preco);
@@ -553,8 +552,7 @@ int main(void) {
                     continue;
                 }
 
-                verificar_orcamento = orcamento - (acucar_comprado * acucar.preco);
-                if (verificar_orcamento < acucar_comprado * acucar.preco) {
+                if (orcamento < (acucar_comprado * acucar.preco)) {
                     printf("\nSaldo insuficiente");
                     printf("\nSaldo atual: %.2f €", orcamento);
                     printf("\nCusto total: %.2f €", acucar_comprado * acucar.preco);
@@ -585,8 +583,7 @@ int main(void) {
                     continue;
                 }
 
-                verificar_orcamento = orcamento - (agua_comprada * agua.preco);
-                if (verificar_orcamento < agua_comprada * agua.preco) {
+                if (orcamento < (agua_comprada * agua.preco)) {
                     printf("\nSaldo insuficiente");
                     printf("\nSaldo atual: %.2f €", orcamento);
                     printf("\nCusto total: %.2f €", agua_comprada * agua.preco);
@@ -618,8 +615,7 @@ int main(void) {
                         continue;
                     }
 
-                    verificar_orcamento = orcamento - (laranjas_compradas * laranja.preco);
-                    if (verificar_orcamento < laranjas_compradas * laranja.preco) {
+                    if (orcamento < (laranjas_compradas * laranja.preco)) {
                         printf("\nSaldo insuficiente");
                         printf("\nSaldo atual: %.2f €", orcamento);
                         printf("\nCusto total: %.2f €", laranjas_compradas * laranja.preco);
@@ -652,8 +648,7 @@ int main(void) {
                         continue;
                     }
 
-                    verificar_orcamento = orcamento - (ananas_comprados * ananas.preco);
-                    if (verificar_orcamento < ananas_comprados * ananas.preco) {
+                    if (orcamento < (ananas_comprados * ananas.preco)) {
                         printf("\nSaldo insuficiente");
                         printf("\nSaldo atual: %.2f €", orcamento);
                         printf("\nCusto total: %.2f €", ananas_comprados * ananas.preco);
@@ -684,8 +679,7 @@ int main(void) {
                         continue;
                     }
 
-                    verificar_orcamento = orcamento - (cocos_comprados * coco.preco);
-                    if (verificar_orcamento < cocos_comprados * coco.preco) {
+                    if (orcamento < (cocos_comprados * coco.preco)) {
                         printf("\nSaldo insuficiente");
                         printf("\nSaldo atual: %.2f €", orcamento);
                         printf("\nCusto total: %.2f €", cocos_comprados * coco.preco);
