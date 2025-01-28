@@ -703,7 +703,7 @@ int main(void) {
         } else {
             printf("\nHoje o fornecedor não apareceu.");
 
-            if (limoes.quantidade == 0 || acucar.quantidade == 0 || agua.quantidade == 0 && laranja.quantidade == 0 && (ananas.quantidade == 0 || coco.quantidade == 0)) {
+            if ((limoes.quantidade == 0 || acucar.quantidade == 0 || agua.quantidade == 0) && (laranja.quantidade == 0 && (ananas.quantidade == 0 || coco.quantidade == 0))) {
                 printf("\nSem stock suficiente.");
                 getchar();
                 game_over(jogador, i, lucro_total);
