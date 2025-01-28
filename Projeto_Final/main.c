@@ -703,7 +703,7 @@ int main(void) {
         } else {
             printf("\nHoje o fornecedor não apareceu.");
 
-            if (limoes.quantidade == 0 || acucar.quantidade == 0 || agua.quantidade == 0 || laranja.quantidade == 0 || ananas.quantidade == 0 || coco.quantidade == 0) {
+            if (limoes.quantidade == 0 || acucar.quantidade == 0 || agua.quantidade == 0 && (laranja.quantidade == 0 || ananas.quantidade == 0 || coco.quantidade == 0)) {
                 printf("\nSem stock suficiente.");
                 getchar();
                 game_over(jogador, i, lucro_total);
@@ -851,7 +851,7 @@ int main(void) {
         }
 
         int desperdicio_limonada = limonada.quantidade - vendas_limonada;
-        int desperdicio_laranja = limonada.quantidade - vendas_sumo_laranja;
+        int desperdicio_laranja = sumo_laranja.quantidade - vendas_sumo_laranja;
         int desperdicio_coco_ananas = ananas_coco.quantidade - vendas_ananas_coco;
 
         lucro_limonada = ((limonada.preco - custo_por_unidade_limonada) * vendas_limonada) - (custo_por_unidade_limonada * desperdicio_limonada);
@@ -861,12 +861,12 @@ int main(void) {
         if (sumo_laranja.quantidade > 0) {
             printf("\nForam vendidos %d sumos de laranja.", vendas_sumo_laranja);
             printf("\nDesperdiçaste %d sumos de laranja.", desperdicio_laranja);
-            lucro_laranja = (laranja.preco * vendas_sumo_laranja) - (laranja.preco * desperdicio_laranja) * 0.1;
+            lucro_laranja = ((laranja.preco * vendas_sumo_laranja) - (laranja.preco * desperdicio_laranja)) * 1.1;
         }
         if (ananas_coco.quantidade > 0) {
             printf("\nForam vendidos %d sumos de ananás e coco.", vendas_sumo_laranja);
             printf("\nDesperdiçaste %d sumos de ananás e coco.", desperdicio_laranja);
-            lucro_coco_ananas = ((ananas_coco.preco - custo_por_unidade_ananas) * vendas_ananas_coco) - (custo_por_unidade_ananas * desperdicio_coco_ananas) * 0.3;
+            lucro_coco_ananas = (((ananas_coco.preco - custo_por_unidade_ananas) * vendas_ananas_coco) - (custo_por_unidade_ananas * desperdicio_coco_ananas)) * 1.3;
         }
         lucro_do_dia = lucro_limonada + lucro_coco_ananas + lucro_laranja;
         lucro_total += lucro_do_dia;

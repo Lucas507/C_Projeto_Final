@@ -1,1 +1,6 @@
 Scoreboard
+
+Jogador: A
+
+Último dia: 3
+Lucro Total: -1.52
