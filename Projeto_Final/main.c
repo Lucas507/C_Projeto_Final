@@ -150,7 +150,7 @@ int venda_ananas_coco(int sumo_ananas, float chance1, float chance2, float preco
     return venda_sucedida;//retorna o valor das vendas sucedidas
 }
 
-// Função para terminar o jogo(vitória)
+// Função para ganhar o jogo(vitória)
 int vitoria(char *jogador, int dia, float lucro_total) {
     system("cls");
 
